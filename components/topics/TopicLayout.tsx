@@ -51,12 +51,12 @@ export function TopicLayout({
   return (
     <div className="min-h-screen p-4 md:p-8">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-slate-500 mb-6">
-        <span>Dashboard</span>
-        <ChevronRight size={14} />
-        <span>{breadcrumb}</span>
-        <ChevronRight size={14} />
-        <span className="text-slate-300">{title}</span>
+      <div className="flex items-center gap-2 text-sm text-slate-500 mb-6 min-w-0">
+        <span className="shrink-0">Dashboard</span>
+        <ChevronRight size={14} className="shrink-0" />
+        <span className="shrink-0">{breadcrumb}</span>
+        <ChevronRight size={14} className="shrink-0" />
+        <span className="text-slate-300 truncate">{title}</span>
       </div>
 
       {/* Header */}
@@ -80,20 +80,20 @@ export function TopicLayout({
       </motion.div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-8 bg-white/3 border border-white/8 rounded-xl p-1 w-fit overflow-x-auto">
+      <div className="flex gap-1 mb-8 bg-white/3 border border-white/8 rounded-xl p-1 w-full md:w-fit overflow-x-auto">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={cn(
-              "flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap",
+              "flex flex-1 md:flex-initial items-center justify-center md:justify-start gap-2 px-3 md:px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 whitespace-nowrap",
               activeTab === tab.id
                 ? "bg-indigo-600 text-white shadow-[0_0_15px_rgba(99,102,241,0.3)]"
                 : "text-slate-400 hover:text-slate-200 hover:bg-white/5"
             )}
           >
             <tab.icon size={15} />
-            {tab.label}
+            <span className="hidden sm:inline">{tab.label}</span>
           </button>
         ))}
       </div>
