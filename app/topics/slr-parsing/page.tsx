@@ -204,6 +204,31 @@ export default function SLRParsingPage() {
           />
         }
         code={<CodeBlock code={SLR_CODE} language="c" filename="slr_parser.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm: SLR Parsing",
+                content: [
+                  "Prerequisite: build the SLR ACTION and GOTO tables from the LR(0) automaton",
+                  "Initialize: push state 0 onto the state stack; set ip to first input symbol",
+                  "Let s = top of state stack; a = current input symbol",
+                  "If ACTION[s, a] = shift t: push state t onto stack; advance ip",
+                  "If ACTION[s, a] = reduce A → β: pop |β| states from stack; let s' = top state; push GOTO[s', A]; output production A → β",
+                  "If ACTION[s, a] = accept: parsing complete — success",
+                  "If ACTION[s, a] = error: call error recovery",
+                  "Repeat from step 3",
+                ],
+              },
+              {
+                type: "note",
+                content: "SLR uses FOLLOW sets to decide when to reduce. If a∈FOLLOW(A) and item [A→α•] is in the current state, reduce by A→α.",
+              },
+            ]}
+            complexity={{ time: "O(n) per input token", space: "O(n + |States|)" }}
+          />
+        }
         visualization={
           <GlassCard className="p-6">
             <h3 className="font-bold text-white mb-4">SLR ACTION & GOTO Table</h3>

@@ -216,6 +216,31 @@ export default function LL1TablePage() {
           />
         }
         code={<CodeBlock code={LL1_TABLE_CODE} language="c" filename="ll1_table.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm: LL(1) Parsing Table Construction",
+                content: [
+                  "Prerequisite: compute FIRST and FOLLOW sets for all non-terminals",
+                  "Initialize: set M[A, a] = error for all non-terminals A and terminals a",
+                  "For each production A → α in the grammar:",
+                  "  For each terminal a ∈ FIRST(α): add A → α to M[A, a]",
+                  "  If ε ∈ FIRST(α):",
+                  "    For each terminal b ∈ FOLLOW(A): add A → α to M[A, b]",
+                  "    If $ ∈ FOLLOW(A): add A → α to M[A, $]",
+                  "If any cell M[A, a] contains more than one production: grammar is NOT LL(1)",
+                ],
+              },
+              {
+                type: "note",
+                content: "A conflict in the table (two productions in one cell) means the grammar is ambiguous, left-recursive, or requires left factoring.",
+              },
+            ]}
+            complexity={{ time: "O(|G| × (|T| + |NT|))", space: "O(|NT| × |T|)" }}
+          />
+        }
         visualization={
           <GlassCard className="p-5">
             <h3 className="font-bold text-white mb-4">LL(1) Parsing Table</h3>

@@ -122,6 +122,32 @@ Result: fewer states, same parsing power for this grammar`,
             </div>
           </GlassCard>
         }
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm: LALR Table Construction (via LR(1))",
+                content: [
+                  "Step 1 — Build the complete canonical LR(1) collection of item sets",
+                  "Step 2 — Find all pairs of LR(1) states with the same core (same LR(0) items, ignoring lookaheads)",
+                  "Step 3 — Merge each group of same-core states into a single state: union their lookahead sets",
+                  "Step 4 — Check merged states for reduce-reduce conflicts (if merging creates one: grammar is not LALR(1))",
+                  "Step 5 — Build ACTION table from merged states:",
+                  "  If [A → α•aβ, _] ∈ state and GOTO on terminal a → state j: ACTION[state, a] = shift j",
+                  "  If [A → α•, a] ∈ state (A ≠ S'): ACTION[state, a] = reduce A → α",
+                  "  If [S' → S•, $] ∈ state: ACTION[state, $] = accept",
+                  "Step 6 — Build GOTO table: GOTO[state, A] = merged state for non-terminal A transitions",
+                ],
+              },
+              {
+                type: "note",
+                content: "LALR tables have the same number of states as SLR but use LR(1) lookaheads. They resolve more conflicts than SLR while being far more compact than canonical LR(1).",
+              },
+            ]}
+            complexity={{ time: "O(|G|³ × |T|) for LR(1) phase", space: "O(|States|_LALR × (|T| + |NT|))" }}
+          />
+        }
         visualization={
           <GlassCard className="p-5">
             <h3 className="font-bold text-white mb-4">LALR State Merging Visualization</h3>

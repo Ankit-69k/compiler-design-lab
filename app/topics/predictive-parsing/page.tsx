@@ -288,6 +288,32 @@ Reading: M[E, id] = E → TE' means: when TOS=E and input=id, expand using E→T
           />
         }
         code={<CodeBlock code={CODE} language="c" filename="predictive_parser.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm: Non-Recursive Predictive Parsing",
+                content: [
+                  "Prerequisite: construct the LL(1) parsing table M for the grammar",
+                  "Initialize: push $ then start symbol S onto the stack; set ip to first input token",
+                  "Let X = top of stack, a = current input symbol (pointed to by ip)",
+                  "If X = a = $: ACCEPT — parsing is complete",
+                  "If X = a (both are the same terminal): pop X from stack, advance ip",
+                  "If X is a non-terminal: look up M[X, a]",
+                  "If M[X, a] = X → Y₁Y₂...Yₖ: pop X, push Yₖ, ..., Y₂, Y₁ (in reverse order)",
+                  "If M[X, a] = error: invoke error recovery routine",
+                  "Repeat from step 3",
+                ],
+              },
+              {
+                type: "note",
+                content: "Productions are pushed onto the stack in reverse order so that Y₁ is on top and will be matched first against the input.",
+              },
+            ]}
+            complexity={{ time: "O(n) per input token", space: "O(|Grammar| + n)" }}
+          />
+        }
         visualization={<PredictiveParsingViz />}
         practice={
           <GlassCard className="p-5 max-w-2xl">

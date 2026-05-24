@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ArrowRight, Play, ChevronDown } from "lucide-react";
+import { ArrowRight, Play, ChevronDown, FileDown, Loader2 } from "lucide-react";
 
 const typingWords = [
   "FIRST & FOLLOW",
@@ -120,6 +120,28 @@ function ParticleField() {
 }
 
 export function HeroSection() {
+  const [generating, setGenerating] = useState<"codes" | "algos" | null>(null);
+
+  async function handleDownloadCodes() {
+    setGenerating("codes");
+    try {
+      const { downloadCCodesPdf } = await import("@/lib/generate-pdf");
+      await downloadCCodesPdf();
+    } finally {
+      setGenerating(null);
+    }
+  }
+
+  async function handleDownloadAlgos() {
+    setGenerating("algos");
+    try {
+      const { downloadAlgorithmsPdf } = await import("@/lib/generate-pdf");
+      await downloadAlgorithmsPdf();
+    } finally {
+      setGenerating(null);
+    }
+  }
+
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden grid-bg">
       {/* Background gradients */}
@@ -185,7 +207,7 @@ export function HeroSection() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+          className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-5"
         >
           <Link
             href="/topics/first-follow"
@@ -201,6 +223,39 @@ export function HeroSection() {
           >
             Practice Problems
           </Link>
+        </motion.div>
+
+        {/* Download PDF Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.75 }}
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-16"
+        >
+          <button
+            onClick={handleDownloadCodes}
+            disabled={generating !== null}
+            className="group flex items-center gap-2 px-6 py-2.5 rounded-xl bg-indigo-600/15 border border-indigo-500/35 text-indigo-300 font-semibold text-sm hover:bg-indigo-600/28 hover:border-indigo-400/60 hover:text-indigo-200 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {generating === "codes" ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <FileDown size={16} className="group-hover:-translate-y-0.5 transition-transform" />
+            )}
+            {generating === "codes" ? "Generating PDF…" : "Download All C Codes"}
+          </button>
+          <button
+            onClick={handleDownloadAlgos}
+            disabled={generating !== null}
+            className="group flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600/15 border border-emerald-500/35 text-emerald-300 font-semibold text-sm hover:bg-emerald-600/28 hover:border-emerald-400/60 hover:text-emerald-200 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {generating === "algos" ? (
+              <Loader2 size={16} className="animate-spin" />
+            ) : (
+              <FileDown size={16} className="group-hover:-translate-y-0.5 transition-transform" />
+            )}
+            {generating === "algos" ? "Generating PDF…" : "Download All Algorithms"}
+          </button>
         </motion.div>
 
         {/* Stats */}

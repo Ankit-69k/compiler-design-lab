@@ -355,6 +355,41 @@ FOLLOW Sets:
           />
         }
         code={<CodeBlock code={FIRST_FOLLOW_CODE} language="c" filename="first_follow.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm 1: Compute FIRST Sets",
+                content: [
+                  "Initialize FIRST(X) = {} for every grammar symbol X",
+                  "For each terminal a: FIRST(a) = {a}",
+                  "For each production X → ε: add ε to FIRST(X)",
+                  "For each production X → Y₁Y₂...Yₖ: add FIRST(Y₁) − {ε} to FIRST(X)",
+                  "If ε ∈ FIRST(Y₁): also add FIRST(Y₂) − {ε} to FIRST(X), and so on",
+                  "If ε ∈ FIRST(Yᵢ) for all i = 1..k: add ε to FIRST(X)",
+                  "Repeat steps 3–6 until no FIRST set changes (fixed-point iteration)",
+                ],
+              },
+              {
+                type: "algorithm",
+                title: "Algorithm 2: Compute FOLLOW Sets",
+                content: [
+                  "Initialize FOLLOW(S) = {$} (S is the start symbol); all others = {}",
+                  "For each production A → αBβ: add FIRST(β) − {ε} to FOLLOW(B)",
+                  "For each production A → αBβ where ε ∈ FIRST(β): add FOLLOW(A) to FOLLOW(B)",
+                  "For each production A → αB (B at the end): add FOLLOW(A) to FOLLOW(B)",
+                  "Repeat steps 2–4 until no FOLLOW set changes",
+                ],
+              },
+              {
+                type: "note",
+                content: "ε (epsilon) is never a member of any FOLLOW set. FOLLOW sets only contain terminals and $.",
+              },
+            ]}
+            complexity={{ time: "O(|G|² × |T|)", space: "O(|NT| × |T|)" }}
+          />
+        }
         visualization={<FirstFollowViz />}
         practice={PRACTICE_CONTENT}
         viva={<VivaQuestions questions={VIVA_QS} />}

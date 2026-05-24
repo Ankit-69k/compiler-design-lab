@@ -313,6 +313,42 @@ Derivation of T + T + T:
           />
         }
         code={<CodeBlock code={CODE} language="c" filename="left_recursion.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm 1: Remove Direct Left Recursion from A",
+                content: [
+                  "Group all productions for A: A → Aα₁ | Aα₂ | ... | β₁ | β₂ | ...",
+                  "Separate recursive alternatives (start with A) and non-recursive alternatives (βᵢ)",
+                  "Create a new non-terminal A'",
+                  "Replace A's productions with: A → β₁A' | β₂A' | ... (non-recursive, followed by A')",
+                  "Add: A' → α₁A' | α₂A' | ... | ε (recursive alternatives shifted to A')",
+                  "Delete the original left-recursive productions",
+                ],
+              },
+              {
+                type: "algorithm",
+                title: "Algorithm 2: Remove All Left Recursion (Including Indirect)",
+                content: [
+                  "Arrange non-terminals in some order: A₁, A₂, ..., Aₙ",
+                  "For i = 1 to n:",
+                  "  For j = 1 to i − 1:",
+                  "    For each production Aᵢ → Aⱼγ:",
+                  "      Replace it with Aᵢ → δ₁γ | δ₂γ | ... (where Aⱼ → δ₁ | δ₂ | ...)",
+                  "  Apply Algorithm 1 to remove any direct left recursion from Aᵢ",
+                  "Remove any useless non-terminals introduced by the transformation",
+                ],
+              },
+              {
+                type: "note",
+                content: "The ordering of non-terminals in Algorithm 2 matters for intermediate steps but the final result (absence of left recursion) is order-independent.",
+              },
+            ]}
+            complexity={{ time: "O(n² × |Grammar|)", space: "O(|Grammar|)" }}
+          />
+        }
         visualization={LR_VIZ}
         practice={
           <GlassCard className="p-5 max-w-2xl">

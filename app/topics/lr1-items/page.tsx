@@ -145,6 +145,49 @@ export default function LR1ItemsPage() {
           />
         }
         code={<CodeBlock code={CODE} language="c" filename="lr1_items.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm 1: LR(1) CLOSURE(I)",
+                content: [
+                  "Add all items in I to the result set",
+                  "For each item [A → α•Bβ, a] in the result where B is a non-terminal:",
+                  "  For each production B → γ:",
+                  "    For each terminal b ∈ FIRST(βa):",
+                  "      If [B → •γ, b] is not already in the result: add it",
+                  "Repeat until no new items are added",
+                ],
+              },
+              {
+                type: "algorithm",
+                title: "Algorithm 2: LR(1) GOTO(I, X)",
+                content: [
+                  "Collect all items [A → αX•β, a] where [A → α•Xβ, a] ∈ I",
+                  "Return LR(1) CLOSURE of that collected set",
+                ],
+              },
+              {
+                type: "algorithm",
+                title: "Algorithm 3: Canonical LR(1) Collection",
+                content: [
+                  "Augment grammar: add S' → S",
+                  "Initialize: C = { CLOSURE({[S' → •S, $]}) }",
+                  "For each item set I in C and each grammar symbol X:",
+                  "  Compute J = GOTO(I, X)",
+                  "  If J ≠ {} and J ∉ C: add J to C",
+                  "Repeat until no new item sets are added",
+                ],
+              },
+              {
+                type: "note",
+                content: "The lookahead a in [A→α•β, a] means: reduce by A→αβ only when the next input symbol is a. This is more precise than SLR's FOLLOW sets.",
+              },
+            ]}
+            complexity={{ time: "O(|G|³ × |T|)", space: "O(|G|² × |T|)" }}
+          />
+        }
         visualization={
           <GlassCard className="p-5">
             <h3 className="font-bold text-white mb-4">LR(1) vs LR(0) Item Comparison</h3>

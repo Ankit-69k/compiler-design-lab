@@ -1,13 +1,14 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { BookOpen, Code2, Eye, Dumbbell, HelpCircle, ChevronRight } from "lucide-react";
+import { BookOpen, Code2, Eye, Dumbbell, HelpCircle, ChevronRight, Workflow, FileDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DifficultyBadge } from "@/components/ui/Badge";
 
 const tabs = [
   { id: "theory", label: "Theory", icon: BookOpen },
   { id: "code", label: "C Program", icon: Code2 },
+  { id: "algorithm", label: "Algorithm", icon: Workflow },
   { id: "visualization", label: "Visualization", icon: Eye },
   { id: "practice", label: "Practice", icon: Dumbbell },
   { id: "viva", label: "Viva Q&A", icon: HelpCircle },
@@ -20,10 +21,13 @@ interface TopicLayoutProps {
   description: string;
   theory: React.ReactNode;
   code: React.ReactNode;
+  algorithm: React.ReactNode;
   visualization: React.ReactNode;
   practice: React.ReactNode;
   viva: React.ReactNode;
   breadcrumb?: string;
+  cCodesPdfUrl?: string;
+  algoPdfUrl?: string;
 }
 
 export function TopicLayout({
@@ -33,16 +37,20 @@ export function TopicLayout({
   description,
   theory,
   code,
+  algorithm,
   visualization,
   practice,
   viva,
   breadcrumb = "Topics",
+  cCodesPdfUrl,
+  algoPdfUrl,
 }: TopicLayoutProps) {
   const [activeTab, setActiveTab] = useState("theory");
 
   const content: Record<string, React.ReactNode> = {
     theory,
     code,
+    algorithm,
     visualization,
     practice,
     viva,
@@ -70,11 +78,31 @@ export function TopicLayout({
             <h1 className="text-3xl md:text-4xl font-black text-white mb-3">{title}</h1>
             <p className="text-slate-400 max-w-2xl leading-relaxed">{description}</p>
           </div>
-          <div className="flex items-center gap-3">
-            <DifficultyBadge difficulty={difficulty} />
-            <span className="text-xs text-slate-500 bg-white/5 border border-white/8 px-2.5 py-1 rounded-lg">
-              ⏱ {estimatedTime}
-            </span>
+          <div className="flex flex-col items-end gap-3">
+            <div className="flex items-center gap-3">
+              <DifficultyBadge difficulty={difficulty} />
+              <span className="text-xs text-slate-500 bg-white/5 border border-white/8 px-2.5 py-1 rounded-lg">
+                ⏱ {estimatedTime}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <a
+                href={cCodesPdfUrl ?? "/downloads/c-codes.pdf"}
+                download="c-codes.pdf"
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white transition-all duration-200"
+              >
+                <FileDown size={13} />
+                All C Codes
+              </a>
+              <a
+                href={algoPdfUrl ?? "/downloads/algorithms.pdf"}
+                download="algorithms.pdf"
+                className="flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white transition-all duration-200"
+              >
+                <FileDown size={13} />
+                All Algorithms
+              </a>
+            </div>
           </div>
         </div>
       </motion.div>

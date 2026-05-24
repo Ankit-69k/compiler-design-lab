@@ -297,6 +297,48 @@ GOTO(I₃, b) = I₄`,
           />
         }
         code={<CodeBlock code={CODE} language="c" filename="lr0_items.c" />}
+        algorithm={
+          <TheorySection
+            blocks={[
+              {
+                type: "algorithm",
+                title: "Algorithm 1: CLOSURE(I)",
+                content: [
+                  "Add all items in I to the result set",
+                  "For each item [A → α•Bβ] in the result where B is a non-terminal:",
+                  "  For each production B → γ in the grammar:",
+                  "    If [B → •γ] is not already in the result: add it",
+                  "Repeat steps 2–3 until no new items are added",
+                ],
+              },
+              {
+                type: "algorithm",
+                title: "Algorithm 2: GOTO(I, X)",
+                content: [
+                  "Collect all items [A → αX•β] where [A → α•Xβ] ∈ I",
+                  "Return CLOSURE of that collected set",
+                ],
+              },
+              {
+                type: "algorithm",
+                title: "Algorithm 3: Canonical LR(0) Collection",
+                content: [
+                  "Augment grammar: add S' → S",
+                  "Initialize: C = { CLOSURE({[S' → •S]}) }",
+                  "For each item set I in C and each grammar symbol X:",
+                  "  Compute J = GOTO(I, X)",
+                  "  If J ≠ {} and J ∉ C: add J to C",
+                  "Repeat until no new item sets are added to C",
+                ],
+              },
+              {
+                type: "note",
+                content: "An item with the dot at the end (A → α•) is a complete item — it signals a possible reduction.",
+              },
+            ]}
+            complexity={{ time: "O(|G|² × |Σ|)", space: "O(|G|² × |Σ|)" }}
+          />
+        }
         visualization={<LR0ItemsViz />}
         practice={
           <GlassCard className="p-5 max-w-2xl">
